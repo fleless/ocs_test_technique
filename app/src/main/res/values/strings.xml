@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OCS-testTechnique</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="emptyList">Please search for a movie..</string>
+    <string name="zeroMoviesFound">No movies corresponding your search available yet ..</string>
+    <string name="errorSearch">Your search should contains more than one character..</string>
+</resources>
