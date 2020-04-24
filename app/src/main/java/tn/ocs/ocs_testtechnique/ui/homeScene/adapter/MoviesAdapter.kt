@@ -1,13 +1,9 @@
-package tn.ocs.ocs_testtechnique.ui.HomeScene.adapter
+package tn.ocs.ocs_testtechnique.ui.homeScene.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -61,6 +57,7 @@ open class MoviesAdapter: RecyclerView.Adapter<MoviesAdapter.transactionItemHold
         fun loadImage(view: ImageView, imageurl: String) {
             Glide.with(view.context)
                 .load(IMAGE_URL+imageurl)
+                .placeholder(R.drawable.ocs_orange_splash)
                 .into(view)
         }
     }

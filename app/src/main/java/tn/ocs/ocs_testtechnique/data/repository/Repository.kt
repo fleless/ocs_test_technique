@@ -2,6 +2,7 @@ package tn.ocs.ocs_testtechnique.data.repository
 
 import io.reactivex.Observable
 import tn.ocs.ocs_testtechnique.data.model.Movies
+import tn.ocs.ocs_testtechnique.data.model.Pitch
 import tn.ocs.ocs_testtechnique.data.network.RestClient
 
 class Repository (private val apiService: RestClient) {
@@ -10,4 +11,7 @@ class Repository (private val apiService: RestClient) {
         return apiService.create().getMoviesSearch(name)
     }
 
+    fun getPitch(detailLink: String): Observable<Pitch> {
+        return apiService.create().getPitch(detailLink)
+    }
 }

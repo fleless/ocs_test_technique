@@ -6,4 +6,5 @@
     <string name="emptyList">Please search for a movie..</string>
     <string name="zeroMoviesFound">No movies corresponding your search available yet ..</string>
     <string name="errorSearch">Your search should contains more than one character..</string>
+    <string name="transition_image">transitionImage</string>
 </resources>
