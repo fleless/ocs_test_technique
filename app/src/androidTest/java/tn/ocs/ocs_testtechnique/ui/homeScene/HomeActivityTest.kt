@@ -1,8 +1,8 @@
 package tn.ocs.ocs_testtechnique.ui.homeScene
 
-import android.view.View
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -29,7 +29,10 @@ class HomeActivityTest {
     @Test
     fun testViews() {
         val viewModel = homeActivity.viewModel
+        val binding = homeActivity.binding
         assertNotNull(viewModel)
+        assertTrue(homeActivity.toolbar.menu.hasVisibleItems())
+        assertNotNull(binding)
     }
 
 }
