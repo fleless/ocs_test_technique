@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.Nullable
-import tn.ocs.ocs_testtechnique.ui.HomeScene.HomeActivity
+import tn.ocs.ocs_testtechnique.ui.homeScene.HomeActivity
 
 class SplashScreenActivity : AppCompatActivity() {
 

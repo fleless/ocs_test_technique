@@ -1,8 +1,7 @@
-package tn.ocs.ocs_testtechnique.ui.HomeScene.fragments
+package tn.ocs.ocs_testtechnique.ui.homeScene.fragments
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,20 +10,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_main.*
 import tn.ocs.ocs_testtechnique.R
+import tn.ocs.ocs_testtechnique.common.application.App
+import tn.ocs.ocs_testtechnique.common.constants.CONTENT_KEY
+import tn.ocs.ocs_testtechnique.common.constants.QUERY_KEY
 import tn.ocs.ocs_testtechnique.common.extensions.RecyclerItemClickListenr
-import tn.ocs.ocs_testtechnique.data.model.Content
 import tn.ocs.ocs_testtechnique.data.model.Movies
 import tn.ocs.ocs_testtechnique.databinding.FragmentListMoviesBinding
-import tn.ocs.ocs_testtechnique.ui.HomeScene.HomeViewModel
-import tn.ocs.ocs_testtechnique.ui.HomeScene.adapter.MoviesAdapter
+import tn.ocs.ocs_testtechnique.ui.homeScene.HomeViewModel
+import tn.ocs.ocs_testtechnique.ui.homeScene.adapter.MoviesAdapter
 
-private lateinit var binding: FragmentListMoviesBinding
-private lateinit var viewModel: HomeViewModel
-private lateinit var recyclerView: RecyclerView
-private var moviesAdapter: MoviesAdapter ?= null
 
 class ListMoviesFragment : Fragment() {
+
+    private lateinit var binding: FragmentListMoviesBinding
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var recyclerView: RecyclerView
+    private var moviesAdapter: MoviesAdapter ?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +40,7 @@ class ListMoviesFragment : Fragment() {
                 updateUI(state)
             })
             viewModel.errorSearch.observe(this, Observer { state ->
-                errorSearchFunction(state)
+                if(state) { errorSearchFunction() }
             })
         }
 
@@ -47,11 +50,13 @@ class ListMoviesFragment : Fragment() {
         recyclerView.addOnItemTouchListener(RecyclerItemClickListenr(activity!!, recyclerView, object : RecyclerItemClickListenr.OnItemClickListener {
 
                     override fun onItemClick(view: View, position: Int) {
-                        Log.d("broooo", viewModel.movies.value!!.contents.get(position).subtitle)
+                        App.sharedPreference.saveContent(CONTENT_KEY,
+                            viewModel.movies.value!!.contents[position]
+                        )
+                        viewModel.fragmentInView.value = "detail"
                     }
 
                     override fun onItemLongClick(view: View?, position: Int) {
-                        Log.d("broooo", "long click itz working")
                     }
                 })
         )
@@ -72,11 +77,23 @@ class ListMoviesFragment : Fragment() {
         }
     }
 
-    private fun errorSearchFunction(state: Int) {
+    private fun errorSearchFunction() {
         binding.gridLayout.visibility = View.GONE
         binding.emptyListText.visibility = View.VISIBLE
         binding.emptyListText.text = resources.getString(R.string.errorSearch)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        activity!!.toolbar.subtitle = App.sharedPreference.getValueString(QUERY_KEY,"")
+        if(!App.sharedPreference.getValueString(QUERY_KEY,"").equals("")){
+            viewModel.getMovies(App.sharedPreference.getValueString(QUERY_KEY,"")!!)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
 }

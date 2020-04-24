@@ -1,6 +1,5 @@
 package tn.ocs.ocs_testtechnique.data.model
 
-import java.lang.reflect.Constructor
 
 data class Content(
     val detaillink: String,
@@ -11,7 +10,6 @@ data class Content(
     val id: String,
     val imageurl: String,
     val lowrightinfo: Any,
-    val playinfoid: Playinfoid,
     val subtitle: String,
     val subtitlefocus: Any,
     val title: List<Title>

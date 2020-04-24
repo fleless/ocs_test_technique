@@ -1,16 +1,13 @@
-package tn.ocs.ocs_testtechnique.ui.HomeScene
+package tn.ocs.ocs_testtechnique.ui.homeScene
 
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
-import android.widget.Toast
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_main.*
 import tn.ocs.ocs_testtechnique.R
@@ -18,7 +15,8 @@ import tn.ocs.ocs_testtechnique.common.application.App
 import tn.ocs.ocs_testtechnique.common.constants.QUERY_KEY
 import tn.ocs.ocs_testtechnique.databinding.ActivityMainBinding
 import tn.ocs.ocs_testtechnique.ui.BaseActivity
-import tn.ocs.ocs_testtechnique.ui.HomeScene.fragments.ListMoviesFragment
+import tn.ocs.ocs_testtechnique.ui.homeScene.fragments.ListMoviesFragment
+import tn.ocs.ocs_testtechnique.ui.homeScene.fragments.MovieDetailsFragment
 
 class HomeActivity : BaseActivity() {
 
@@ -32,9 +30,6 @@ class HomeActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         container = binding.container
-        viewModel.fragmentInView.observe(this, Observer { state ->
-          displayFragment(state)
-        })
         viewModel.fragmentInView.value = "list"
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
@@ -42,13 +37,20 @@ class HomeActivity : BaseActivity() {
             viewModel.getMovies(App.sharedPreference.getValueString(QUERY_KEY,"")!!)
             toolbar.subtitle = App.sharedPreference.getValueString(QUERY_KEY,"")!!
         }
+        viewModel.fragmentInView.observe(this, Observer { state ->
+            displayFragment(state)
+        })
     }
 
     fun displayFragment(state: String){
         if(state.equals("list")){
             supportFragmentManager.beginTransaction().replace(R.id.container, ListMoviesFragment()).commit()
+            toolbar.subtitle = App.sharedPreference.getValueString(QUERY_KEY,"")
         }else if (state.equals("detail")) {
-
+            toolbar.subtitle = ""
+            val imageViewTransition: ImageView = findViewById(R.id.imgItem)
+            supportFragmentManager.beginTransaction().replace(R.id.container, MovieDetailsFragment()).addSharedElement(imageViewTransition,imageViewTransition.transitionName).addToBackStack(null)
+                .commit()
         }
     }
 
